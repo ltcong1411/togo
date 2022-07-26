@@ -1,0 +1,11 @@
+port: 8000
+
+jwt_secret: to-go
+
+mongo:
+  host: 10.60.3.31
+  port: 27017
+  db: togo
+  collection:
+    user: "users"
+    task: "tasks"
