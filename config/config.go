@@ -14,22 +14,20 @@ var (
 
 // Schema of config
 type Schema struct {
-	Port      string `mapstructure:"port"`
-	JWTSecret string `mapstructure:"jwt_secret"`
-	Mongo     Mongo  `mapstructure:"mongo"`
-	Redis     Redis  `mapstructure:"redis"`
+	Port                  string `mapstructure:"port"`
+	JWTSecret             string `mapstructure:"jwt_secret"`
+	DailyTaskLimitDefault int    `mapstructure:"daily_task_limit_default"`
+	Mongo                 Mongo  `mapstructure:"mongo"`
 }
 
 // Mongo ...
 type Mongo struct {
-	Address    string `mapstructure:"address"`
-	Username   string `mapstructure:"username"`
-	Password   string `mapstructure:"password"`
 	Host       string `mapstructure:"host"`
 	Port       string `mapstructure:"port"`
 	DB         string `mapstructure:"db"`
 	Collection struct {
 		User string `mapstructure:"user"`
+		Task string `mapstructure:"task"`
 	} `mapstructure:"collection"`
 }
 

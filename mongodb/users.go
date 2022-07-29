@@ -5,6 +5,7 @@ import (
 
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -28,10 +29,12 @@ func (m *MongoClient) GetUserByUserName(username string) (user *models.User, err
 
 // InsertUser ...
 func (m *MongoClient) InsertUser(user *models.User) (err error) {
-	_, err = m.UserCollection.InsertOne(ctx, user)
+	result, err := m.UserCollection.InsertOne(ctx, user)
 	if err != nil {
 		return errors.Wrapf(err, "InsertOne failed - user: %+v", user)
 	}
+
+	user.ID = result.InsertedID.(primitive.ObjectID)
 
 	return
 }

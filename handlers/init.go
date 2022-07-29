@@ -77,7 +77,8 @@ func startServer() {
 
 	// private apis
 	privateAPIGroup := e.Group("/private")
-	privateAPIGroup.Use(middleware.JWT([]byte(config.Values.JWTSecret)))
+	privateAPIGroup.Use(isLoggedIn, private)
+	privateAPIGroup.POST("/task/add", addTask)
 
 	log.Info("Starting at port: " + config.Values.Port)
 	if err := e.Start(":" + config.Values.Port); err != nil {

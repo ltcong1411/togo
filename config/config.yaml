@@ -1,6 +1,7 @@
 port: 8000
 
 jwt_secret: to-go
+daily_task_limit_default: 5
 
 mongo:
   host: 10.60.3.31

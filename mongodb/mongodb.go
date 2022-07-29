@@ -2,7 +2,6 @@ package mongodb
 
 import (
 	"context"
-	"fmt"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -20,23 +19,26 @@ var (
 // MongoClient manage all mongodb action
 type MongoClient struct {
 	Client         *mongo.Client
+	DB             *mongo.Database
 	UserCollection *mongo.Collection
+	TaskCollection *mongo.Collection
 }
 
 // MongoStore interface
 type MongoStore interface {
 	// users
-	GetUserByUserName(username string) (user *models.User, err error)
 	InsertUser(user *models.User) (err error)
+	GetUserByUserName(username string) (user *models.User, err error)
+
+	// tasks
+	InsertTask(task *models.Task) (err error)
 
 	Close()
 }
 
 // NewMongoDBClient ...
 func NewMongoDBClient() (MongoStore, error) {
-	// mongoAddress := "mongodb://" + config.Values.Mongo.Host + ":" + config.Values.Mongo.Port
-	mongoAddress := fmt.Sprintf(config.Values.Mongo.Address, config.Values.Mongo.Username, config.Values.Mongo.Password, config.Values.Mongo.DB)
-	log.Debug("mongoAddress: ", mongoAddress)
+	mongoAddress := "mongodb://" + config.Values.Mongo.Host + ":" + config.Values.Mongo.Port
 
 	mongoCli, err := mongo.Connect(ctx, options.Client().ApplyURI(mongoAddress))
 	if err != nil {
@@ -51,7 +53,9 @@ func NewMongoDBClient() (MongoStore, error) {
 
 	mongo := &MongoClient{
 		Client:         mongoCli,
+		DB:             mongoCli.Database(config.Values.Mongo.DB),
 		UserCollection: mongoCli.Database(config.Values.Mongo.DB).Collection(config.Values.Mongo.Collection.User),
+		TaskCollection: mongoCli.Database(config.Values.Mongo.DB).Collection(config.Values.Mongo.Collection.Task),
 	}
 
 	return mongo, nil
