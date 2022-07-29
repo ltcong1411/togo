@@ -1,3 +1,4 @@
+# To Go
 ### Requirements
 
 - Implement one single API which accepts a todo task and records it
@@ -30,3 +31,47 @@
 - We have **collaborative** culture at Manabie. Feel free to ask trieu@manabie.com any questions. We are very happy to answer all of them.
 
 Thank you for spending time to read and attempt our take-home assessment. We are looking forward to your submission.
+
+---
+### Set enviroments
+```sh
+export MONGO__HOST=mongo_host MONGO__PORT=mongo_port
+```
+
+### Run Server Locally
+```go
+go run main.go
+```
+
+### Register User CURL Command:
+```sh
+curl --location --request POST 'localhost:8000/user/register' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name": "Cong",
+    "username": "congle",
+    "password": "congle",
+    "daily_task_limit": 3
+}'
+```
+
+### Login CURL Command:
+```sh
+curl --location --request POST 'localhost:8000/user/login' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "username": "congle",
+    "password": "congle"
+}'
+```
+
+### Add Task CURL Command:
+```sh
+curl --location --request POST 'localhost:8000/private/task/add' \
+--header 'Authorization: Bearer {token}' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "content": "add task",
+    "completed": false
+}'
+```
